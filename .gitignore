@@ -90,3 +90,9 @@ ENV/
 
 # Visual Studio Code project settings 
 .vscode
+
+# Pycharm project settings
+.idea
+
+# sqllite database
+db.sqlite3
