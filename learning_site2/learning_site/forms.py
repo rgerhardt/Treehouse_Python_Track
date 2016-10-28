@@ -1,5 +1,10 @@
 from django import forms
+from django.core import validators
 
+
+def must_be_empty(value):
+    if value:
+        raise forms.ValidationError('is not empty')
 
 class SuggestionFrom(forms.Form):
 
@@ -8,13 +13,9 @@ class SuggestionFrom(forms.Form):
     suggestion = forms.CharField(widget=forms.Textarea)
     honeypot = forms.CharField(required=False,
                                widget=forms.HiddenInput,
-                               label='Leave Empty')
+                               label='Leave Empty',
+                               validators=[must_be_empty])
 
-    def clean_honeypot(self):
-        honeypot = self.cleaned_data['honeypot']
-        if len(honeypot):
-            raise forms.ValidationError(
-                'honeypot should be left empty'
-            )
-        return honeypot
+
+
 
