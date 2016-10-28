@@ -59,3 +59,16 @@ class Question(models.Model):
 
     class Meta:
         ordering = ['order',]
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question)
+    order = models.IntegerField(default=0)
+    text = models.CharField(max_length=255)
+    correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        ordering = ['order',]
