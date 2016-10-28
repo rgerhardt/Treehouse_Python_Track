@@ -1,6 +1,6 @@
 {% extends 'courses/layout.html' %}
 
-{% block title %} New quiz | {{ course.title }} {{ block.super }}{% endblock %}
+{% block title %} {{ form.instance.title|default:'New Quiz' }} | {{ course.title }} {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     <li><a href="{% url 'courses:detail' pk=course.id %}">{{ course.title }}</a></li>
@@ -10,7 +10,7 @@
 {% block content %}
 <div class="row columns">
     {{ block.super }}
-    <h1>Make a new quiz</h1>
+    <h1>{{ form.instance.title|default:'Make a new Quiz' }}</h1>
     <form method="POST" action="">
         {% csrf_token %}
         {{ form.as_p }}
