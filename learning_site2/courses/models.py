@@ -61,6 +61,10 @@ class Question(models.Model):
         ordering = ['order',]
 
 
+class MultipleChoiceQuestion(Question):
+    shuffle_answers = models.BooleanField(default=False)
+
+
 class Answer(models.Model):
     question = models.ForeignKey(Question)
     order = models.IntegerField(default=0)
