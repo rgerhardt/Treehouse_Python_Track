@@ -14,4 +14,7 @@ def nav_courses_list():
     courses = Course.objects.all()
     return {'courses': courses}
 
-
+@register.filter('time_estimate')
+def time_estimate(word_count):
+    minutes = round(word_count/20)
+    return minutes
