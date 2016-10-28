@@ -44,3 +44,18 @@ class Quiz(Step):
 
     class Meta:
         verbose_name_plural = "Quizzes"
+
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz)
+    order = models.IntegerField(default=0)
+    prompt = models.TextField()
+
+    def get_absolute_url(self):
+        return self.quiz.get_absolute_url()
+
+    def __str__(self):
+        return self.prompt
+
+    class Meta:
+        ordering = ['order',]
