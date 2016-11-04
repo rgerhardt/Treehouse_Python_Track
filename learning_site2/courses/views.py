@@ -92,17 +92,22 @@ def create_question(request, quiz_pk, question_type):
 def answer_form(request, question_pk):
     question = get_object_or_404(models.Question, pk=question_pk)
 
-    form = forms.AnswerForm()
+    formset = forms.AnswerFormSet(queryset=question.answer_set.all())
 
     if request.method == 'POST':
-        form = forms.AnswerForm(request.POST)
-        if form.is_valid():
-            answer = form.save(commit=False)
-            answer.question = question
-            answer.save()
-            messages.success(request, "Answer Added")
-            return HttpResponseRedirect(question.get_absolute_url())
+        answers = forms.AnswerFormSet(request.POST,
+                                      queryset=question.answer_set.all())
+
+        if formset.is_valid():
+            answer_form = formset.save(commit=False)
+
+            for answer in answers:
+                answer.question = question
+                answer.save()
+            messages.success(request, "Added answers")
+            return HttpResponseRedirect(question.quiz.get_absolute_url())
+
     return render(request, "courses/answer_form.html", {
         'question': question,
-        'form': form
+        'formset': formset
     })

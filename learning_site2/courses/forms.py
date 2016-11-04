@@ -35,3 +35,9 @@ class AnswerForm(forms.ModelForm):
             'text',
             'correct',
         ]
+
+AnswerFormSet = forms.modelformset_factory(
+    models.Answer,
+    form=AnswerForm,
+    extra=2,
+)
