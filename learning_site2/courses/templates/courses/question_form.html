@@ -11,15 +11,12 @@
 
 {% block content %}
     <div class="row columns">
-        <article>
-            {{ block.super }}
-            <h1>Make a new question</h1>
-            <form method="POST" action="">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" class="button" value="Save">
-            </form>
-
-        </article>
+        {{ block.super }}
+        <h1>Make a new question</h1>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" class="button" value="Save">
+        </form>
     </div>
 {% endblock %}
