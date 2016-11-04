@@ -1,5 +1,6 @@
 from django.conf.urls import url
 
+
 from . import views
 
 urlpatterns = [
@@ -12,5 +13,7 @@ urlpatterns = [
         views.create_question, name='create_question'),
     url(r'(?P<question_pk>\d+)/create_answer/$',
         views.answer_form, name='create_answer'),
+    url(r'by/(?P<teacher>[-\w]+)/$', views.courses_by_teacher, name='by_teacher'),
+    url(r'search/$', views.search, name='search'),
     url(r'(?P<pk>\d+)/$', views.course_detail, name='detail'),
 ]
