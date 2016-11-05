@@ -2,7 +2,7 @@ from itertools import chain
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import  HttpResponseRedirect
+from django.http import  HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q, Count, Sum
 
@@ -21,8 +21,14 @@ def course_list(request):
 
 
 def course_detail(request, pk):
-    course = get_object_or_404(models.Course, pk=pk, published=True)
-    steps = sorted(chain(course.text_set.all(), course.quiz_set.all()),
+    try:
+        course = models.Course.objects.prefetch_related(
+            'quiz_set', 'text_set', 'quiz_set__question_set'
+        ).get(pk=pk, published=True)
+    except models.Course.DoesNotExist:
+        raise Http404
+    else:
+        steps = sorted(chain(course.text_set.all(), course.quiz_set.all()),
                    key=lambda step: step.order)
 
     return render(request, 'courses/course_detail.html', {
