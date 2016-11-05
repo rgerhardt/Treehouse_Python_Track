@@ -4,15 +4,20 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import  HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.db.models import Q
+from django.db.models import Q, Count, Sum
 
 from . import forms
 from . import models
 
 
 def course_list(request):
-    courses = models.Course.objects.filter(published=True)
-    return render(request, 'courses/course_list.html', {'courses': courses})
+    courses = models.Course.objects.filter(
+        published=True
+    ).annotate(
+        total_steps=Count('text', distinct=True)+Count('quiz', distinct=True)
+    )
+    total = courses.aggregate(total=Sum('total_steps'))
+    return render(request, 'courses/course_list.html', {'courses': courses, 'total': total})
 
 
 def course_detail(request, pk):
