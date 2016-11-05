@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import  HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.db.models import Q
 
 from . import forms
 from . import models
@@ -169,5 +170,8 @@ def courses_by_teacher(request, teacher):
 
 def search(request):
     term = request.GET.get('q')
-    courses = models.Course.objects.filter(title__icontains=term, published=True)
+    courses = models.Course.objects.filter(
+                    Q(title__contains=term)|Q(description__icontains=term),
+                    published=True
+                )
     return render(request, 'courses/course_list.html', {'courses': courses})
