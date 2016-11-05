@@ -39,6 +39,7 @@ class Text(Step):
 
 class Quiz(Step):
     total_questions = models.IntegerField(default=4)
+    times_taken = models.IntegerField(default=0, editable=False)
 
     def get_absolute_url(self):
         return reverse('courses:quiz', kwargs={
