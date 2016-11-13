@@ -2,8 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from . import models
 
+from . import models
+from . import mixins
 
 class TeamListView(ListView):
     model = models.Team
@@ -14,9 +15,10 @@ class TeamDetailView(DetailView):
     model = models.Team
 
 
-class TeamCreateView(LoginRequiredMixin, CreateView):
+class TeamCreateView(LoginRequiredMixin, mixins.PageTitleMixin ,CreateView):
     fields = ("name", "practice_location", "coach")
     model =  models.Team
+    page_title = "Create a new Team"
 
     def get_initial(self):
         initial = super(TeamCreateView, self).get_initial()
@@ -25,9 +27,14 @@ class TeamCreateView(LoginRequiredMixin, CreateView):
 
 
 
-class TeamUpdateView(LoginRequiredMixin, UpdateView):
+class TeamUpdateView(LoginRequiredMixin, mixins.PageTitleMixin, UpdateView):
     fields = ("name", "practice_location", "coach")
     model =  models.Team
+
+    def get_page_title(self):
+        obj = self.get_object()
+        return "Update {}".format(obj.name)
+
 
 
 class TeamDeleteView(LoginRequiredMixin, DeleteView):
