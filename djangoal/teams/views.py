@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -13,7 +14,7 @@ class TeamDetailView(DetailView):
     model = models.Team
 
 
-class TeamCreateView(CreateView):
+class TeamCreateView(LoginRequiredMixin, CreateView):
     fields = ("name", "practice_location", "coach")
     model =  models.Team
 
@@ -24,12 +25,12 @@ class TeamCreateView(CreateView):
 
 
 
-class TeamUpdateView(UpdateView):
+class TeamUpdateView(LoginRequiredMixin, UpdateView):
     fields = ("name", "practice_location", "coach")
     model =  models.Team
 
 
-class TeamDeleteView(DeleteView):
+class TeamDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Team
     success_url = reverse_lazy("teams:list")
 
