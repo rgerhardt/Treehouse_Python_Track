@@ -18,7 +18,9 @@ class TeamCreateView(CreateView):
     model =  models.Team
 
     def get_initial(self):
-        initial = super
+        initial = super(TeamCreateView, self).get_initial()
+        initial["coach"] = self.request.user.pk
+        return initial
 
 
 
